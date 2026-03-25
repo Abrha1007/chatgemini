@@ -36,7 +36,7 @@ if "GOOGLE_API_KEY" in st.secrets:
     if "model" not in st.session_state:
         # Usamos 'gemini-1.5-flash' a secas, que es el estándar actual
         st.session_state.model = genai.GenerativeModel(
-            model_name='gemini-1.5-flash', 
+            model_name='gemini-1.5-pro-latest', 
             system_instruction=instruccion_del_sistema
         )
 else:
@@ -85,7 +85,7 @@ with st.sidebar:
                 CV: {texto_cv}
                 """
                 with st.spinner("IA evaluando candidato..."):
-                    respuesta_eval = st.session_state.chat.send_message(prompt_evaluacion)
+                    respuesta_eval = st.session_state.model.generate_content(prompt_evaluacion)
                     st.session_state.ultima_evaluacion = respuesta_eval.text
                     # Guardamos el nombre del archivo para el reporte
                     st.session_state.nombre_candidato = archivo.name
