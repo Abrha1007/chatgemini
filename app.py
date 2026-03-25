@@ -29,18 +29,24 @@ que consultarás con el equipo de RH y que deje su correo.
 Tono: Muy amable, servicial y profesional.
 """
 
-# 2. Luego configuramos la API y el Modelo (La cocina)
+# --- CONFIGURACIÓN DE MODELO ROBUSTA ---
 if "GOOGLE_API_KEY" in st.secrets:
     genai.configure(api_key=st.secrets["GOOGLE_API_KEY"])
     
-    # Inicializamos el modelo solo si no existe, usando la instrucción ya definida arriba
     if "model" not in st.session_state:
-        st.session_state.model = genai.GenerativeModel(
-            model_name='models/gemini-1.5-flash',
-            system_instruction=instruccion_del_sistema
-        )
+        # PRUEBA ESTA LÍNEA: A veces 'models/gemini-1.5-flash' da error en v1beta
+        # Intentaremos con el nombre simplificado que la librería gestiona internamente
+        try:
+            st.session_state.model = genai.GenerativeModel(
+                model_name='gemini-1.5-flash', # Sin el prefijo models/ para probar
+                system_instruction=instruccion_del_sistema
+            )
+            # Solo para confirmar que el modelo cargó bien
+            print("Modelo cargado exitosamente") 
+        except Exception as e:
+            st.error(f"Error al inicializar el modelo: {e}")
 else:
-    st.error("❌ Falta la API Key en los Secrets de Streamlit")
+    st.error("Falta la API Key en los Secrets")
     st.stop()
 
 # 3. Finalmente iniciamos el chat
