@@ -6,15 +6,9 @@ import matplotlib.pyplot as plt # Importamos matplotlib
 # 1. Configuración de la App
 st.set_page_config(page_title="TalentScout AI", page_icon="👔", layout="wide")
 
-# 2. Configuración de Gemini
-if "GOOGLE_API_KEY" in st.secrets:
-    GOOGLE_API_KEY = st.secrets["GOOGLE_API_KEY"]
-    genai.configure(api_key=GOOGLE_API_KEY)
-    st.success("✅ La API Key fue detectada y configurada.")
-else:
-    st.error("❌ ERROR: No se encontró la variable GOOGLE_API_KEY en los Secrets de Streamlit.")
-    st.stop() # Detiene la ejecución si no hay llave
-# 3. Definir Personalidad
+# --- SECCIÓN 2 Y 3 CORREGIDAS Y ORDENADAS ---
+
+# 1. Primero definimos la información (Los ingredientes)
 info_empresa = """
 INFORMACIÓN PARA CANDIDATOS:
 - Nuestra empresa se llama 'TechInnovate'.
@@ -35,12 +29,21 @@ que consultarás con el equipo de RH y que deje su correo.
 Tono: Muy amable, servicial y profesional.
 """
 
-if "model" not in st.session_state:
-    st.session_state.model = genai.GenerativeModel(
-        model_name='gemini-1.5-flash',
-        system_instruction=instruccion_del_sistema
-    )
+# 2. Luego configuramos la API y el Modelo (La cocina)
+if "GOOGLE_API_KEY" in st.secrets:
+    genai.configure(api_key=st.secrets["GOOGLE_API_KEY"])
+    
+    # Inicializamos el modelo solo si no existe, usando la instrucción ya definida arriba
+    if "model" not in st.session_state:
+        st.session_state.model = genai.GenerativeModel(
+            model_name='models/gemini-1.5-flash',
+            system_instruction=instruccion_del_sistema
+        )
+else:
+    st.error("❌ Falta la API Key en los Secrets de Streamlit")
+    st.stop()
 
+# 3. Finalmente iniciamos el chat
 if "chat" not in st.session_state:
     st.session_state.chat = st.session_state.model.start_chat(history=[])
 
