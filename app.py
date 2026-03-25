@@ -29,27 +29,21 @@ que consultarás con el equipo de RH y que deje su correo.
 Tono: Muy amable, servicial y profesional.
 """
 
-# --- CONFIGURACIÓN DE MODELO ROBUSTA ---
+# --- CONFIGURACIÓN DE MODELO CORREGIDA ---
 if "GOOGLE_API_KEY" in st.secrets:
     genai.configure(api_key=st.secrets["GOOGLE_API_KEY"])
     
     if "model" not in st.session_state:
-        # PRUEBA ESTA LÍNEA: A veces 'models/gemini-1.5-flash' da error en v1beta
-        # Intentaremos con el nombre simplificado que la librería gestiona internamente
-        try:
-            st.session_state.model = genai.GenerativeModel(
-                model_name='gemini-1.5-flash', # Sin el prefijo models/ para probar
-                system_instruction=instruccion_del_sistema
-            )
-            # Solo para confirmar que el modelo cargó bien
-            print("Modelo cargado exitosamente") 
-        except Exception as e:
-            st.error(f"Error al inicializar el modelo: {e}")
+        # Usamos 'gemini-1.5-flash' a secas, que es el estándar actual
+        st.session_state.model = genai.GenerativeModel(
+            model_name='gemini-1.5-flash', 
+            system_instruction=instruccion_del_sistema
+        )
 else:
     st.error("Falta la API Key en los Secrets")
     st.stop()
 
-# 3. Finalmente iniciamos el chat
+# 3. Reiniciar el chat si hay error de sesión
 if "chat" not in st.session_state:
     st.session_state.chat = st.session_state.model.start_chat(history=[])
 
