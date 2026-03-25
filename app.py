@@ -4,7 +4,7 @@ from pypdf import PdfReader
 import matplotlib.pyplot as plt # Importamos matplotlib
 
 # 1. Configuración de la App
-st.set_page_config(page_title="TalentScout AI", page_icon="👔", layout="wide")
+st.set_page_config(page_title="GA HOSPITALITY IA", page_icon="👔", layout="wide")
 
 # --- SECCIÓN 2 Y 3 CORREGIDAS Y ORDENADAS ---
 
