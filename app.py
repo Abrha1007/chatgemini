@@ -5,9 +5,7 @@ import matplotlib.pyplot as plt # Importamos matplotlib
 
 # 1. Configuración de la App
 st.set_page_config(page_title="GA HOSPITALITY IA", page_icon="👔", layout="wide")
-
 # --- SECCIÓN 2 Y 3 CORREGIDAS Y ORDENADAS ---
-
 # 1. Primero definimos la información (Los ingredientes)
 info_empresa = """
 INFORMACIÓN PARA CANDIDATOS:
