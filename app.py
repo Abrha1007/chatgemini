@@ -7,14 +7,13 @@ import matplotlib.pyplot as plt # Importamos matplotlib
 st.set_page_config(page_title="TalentScout AI", page_icon="👔", layout="wide")
 
 # 2. Configuración de Gemini
-GOOGLE_API_KEY = "Tu_API_Key_Aqui" 
-genai.configure(api_key=GOOGLE_API_KEY)
-
-if "GOOGLE_API_KEY" not in st.secrets:
-    st.error("❌ ERROR: No encontré la variable GOOGLE_API_KEY en los Secrets de Streamlit.")
+if "GOOGLE_API_KEY" in st.secrets:
+    GOOGLE_API_KEY = st.secrets["GOOGLE_API_KEY"]
+    genai.configure(api_key=GOOGLE_API_KEY)
+    st.success("✅ La API Key fue detectada y configurada.")
 else:
-    # Esto NO mostrará tu llave completa por seguridad, solo te dirá si existe
-    st.success("✅ La API Key fue detectada en el sistema.")
+    st.error("❌ ERROR: No se encontró la variable GOOGLE_API_KEY en los Secrets de Streamlit.")
+    st.stop() # Detiene la ejecución si no hay llave
 # 3. Definir Personalidad
 info_empresa = """
 INFORMACIÓN PARA CANDIDATOS:
